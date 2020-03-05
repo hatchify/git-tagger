@@ -28,7 +28,7 @@ func newPatchVersion(str string) (patch uint64, err error) {
 	return strconv.ParseUint(str, 10, 64)
 }
 
-func runCommand(name string, args ...string) (output string, err error) {
+func runCommand(name string, args ...string) (stdout, stderr string, err error) {
 	// Initialize buffers
 	buf := bytes.NewBuffer(nil)
 	errBuf := bytes.NewBuffer(nil)
@@ -40,17 +40,12 @@ func runCommand(name string, args ...string) (output string, err error) {
 
 	// Run command
 	if err = cmd.Run(); err != nil {
-		return
-	}
-
-	// Check to see if anything was pushed to Stderr
-	if errBuf.Len() > 0 {
-		// Error buffer was populated, set and return error
 		err = errors.New(errBuf.String())
 		return
 	}
 
-	// Set output as buffer converted to a string
-	output = buf.String()
+	// Return buffer string types
+	stdout = buf.String()
+	stderr = errBuf.String()
 	return
 }
