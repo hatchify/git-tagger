@@ -33,7 +33,10 @@ func main() {
 
 	switch action {
 	case "increment":
-		increment(tag, versionType)
+		if err = increment(tag, versionType); err != nil {
+			log.Fatal(err)
+		}
+
 	case "get":
 		print(tag)
 	}
