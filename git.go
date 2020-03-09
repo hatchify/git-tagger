@@ -3,11 +3,12 @@ package main
 import (
 	"errors"
 	"fmt"
+	"strings"
 )
 
 func getCurrentTag() (tag *Tag, err error) {
 	var stdout, stderr string
-	if stdout, stderr, err = runCommand("git", "describe", "--tag"); err != nil {
+	if stdout, stderr, err = runCommand("git", "tag", "--sort=-version:refname"); err != nil {
 		return
 	}
 
@@ -16,7 +17,11 @@ func getCurrentTag() (tag *Tag, err error) {
 		return
 	}
 
-	return newTag(stdout)
+	// Take the latest entry
+	latest := strings.SplitN(stdout, "\n", 2)[0]
+
+	// Creae tag with latest entry
+	return newTag(latest)
 }
 
 func setTag(tag *Tag) (err error) {
