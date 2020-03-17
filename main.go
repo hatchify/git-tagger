@@ -26,6 +26,8 @@ func main() {
 	flag.StringVar(&action, "action", "increment", actionDescription)
 	flag.Parse()
 
+	getFetch()
+
 	// Get current git tag as a parsed SEMVER tag
 	if tag, err = getCurrentTag(); err != nil {
 		log.Fatalf("error getting current tag: %v", err)

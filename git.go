@@ -6,6 +6,11 @@ import (
 	"strings"
 )
 
+func getFetch() {
+	// Ensure we have the latest tags and branches
+	runCommand("git", "fetch", "origin", "--prune", "--prune-tags", "--tags")
+}
+
 func getCurrentTag() (tag *Tag, err error) {
 	var stdout, stderr string
 	if stdout, stderr, err = runCommand("git", "tag", "--sort=-version:refname"); err != nil {
